@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{$art.title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="__STATIC__/layui/css/layui.css">
+    <link rel="stylesheet" href="__CSS__/l-blog.css">
+    <script src="__JS__/jquery.min.js"></script>
+</head>
+<body>
+<!--导航-->
+{include file="common/nav"}
+
+<div class="layui-row">
+    <div class="layui-container">
+        <div class="crumbs">
+            <span class="layui-breadcrumb">
+                <a href="/">首页</a><a
+                    href="{:url('index/cat',['cat_id'=>$cat_id])}">{$cat.cat_name}</a><a><cite>正文</cite></a>
+            </span>
+        </div>
+        <div class="layui-col-space10">
+            <div class="layui-col-md8">
+                <!--文章-->
+                <div class="panel">
+                    <!--标题-->
+                    <div class="layui-row">
+                        <h1>{$art.title}</h1>
+                    </div>
+                    <!--信息-->
+                    <div class="layui-row layui-col-space3">
+                        <div class="layui-col-sm4 layui-col-xs12">
+                            <i class="layui-icon layui-icon-username">
+                                <span>{$art.author}</span>
+                            </i>
+                        </div>
+                        <div class="layui-col-sm4 layui-col-xs12">
+                            <i class="layui-icon layui-icon-date">
+                                <span class="article-time" data="{$art.add_time*1000}"></span>
+                            </i>
+                        </div>
+                        <div class="layui-col-sm4 layui-col-xs12">
+                            <i class="layui-icon layui-icon-note">
+                                <span>{$cat.cat_name}</span>
+                            </i>
+                        </div>
+                    </div>
+                    <hr class="layui-bg-green">
+                    <!--正文-->
+                    <div class="layui-row" id="art_content">
+                        {$art.content}
+                    </div>
+                    <hr class="layui-bg-green">
+                    <div class="layui-row">
+                        <div class="layui-row">
+                            <span>上一篇：</span>{if ($art_prev)}<a
+                                href="{:url('article/artShow',['art_id'=>$art_prev.id])}">{$art_prev.title}</a>{else/}<span
+                                style="color: #868686;">没有了</span>{/if}
+                        </div>
+                        <div class="layui-row">
+                            <span>下一篇：</span>{if ($art_next)}<a
+                                href="{:url('article/artShow',['art_id'=>$art_next.id])}">{$art_next.title}</a>{else/}<span
+                                style="color: #868686;">没有了</span>{/if}
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    {include file="comment/comment"}
+                </div>
+            </div>
+            <div class="layui-col-md4">
+                <!--文章搜索-->
+                <div class="panel">
+                    <div class="layui-row">
+                        <i class="layui-icon layui-icon-search">
+                            <sapn>文章搜索</sapn>
+                        </i>
+                    </div>
+                    <hr class="layui-bg-green">
+                    <div>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" placeholder="请输入关键字">
+                        </div>
+                        <div class="layui-input-inline">
+                            <button type="button" class="layui-btn">搜索</button>
+                        </div>
+                    </div>
+                </div>
+                <!--热文推荐-->
+                {include file="common/hot"}
+
+                <!--友情链接-->
+                {include file="common/link"}
+
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="is_login" value="{$Think.session.user_id?1:0}">
+<!--页脚-->
+{include file="common/footer"}
+
+</body>
+</html>
+<script src="__STATIC__/layui/layui.all.js"></script>
+<script src="__JS__/l-blog.js"></script>
+<script type="text/javascript" src="__STATIC__/ueditor/ueditor.parse.min.js"></script>
+<script>
+    uParse('#art_content', {
+        rootPath: '__STATIC__/ueditor'
+    })
+</script>
